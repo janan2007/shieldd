@@ -149,7 +149,7 @@
             let guardianEmail = localStorage.getItem('guardianEmail');
 
             if (guardianEmail) {
-                const message = `You got a new message from Shield Her:\n\ Message: This is an urgent message from your daughter, {{fullName}}. She has pressed the emergency help button in the Shield Her app, indicating she may be in immediate danger or require assistance.Please contact her immediately or take necessary actions to ensure her safety.!`;
+                const message = `You got a new message from Shield Her:\n\ Message: This is an urgent message from your daughter. She has pressed the emergency help button in the Shield Her app, indicating she may be in immediate danger or require assistance.Please contact her immediately or take necessary actions to ensure her safety.!`;
 
                 emailjs.send('service_cici2pt', 'template_n0n7f8o', {
                     to_name: fullName,
