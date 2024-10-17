@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shield Her - Women's Safety App</title>
+    <style>
+        body {
+            background-image: url('jj.1.jpg'); /* Replace with your background image */
+            background-size: cover;
+            background-position: center;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+        }
+        .logo {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #000000; /* Soft pink for the title */
+            margin-top: 50px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .form-container, .awareness-container, .self-defense-container {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            max-width: 400px;
+            margin: 100px auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none; /* Hide all containers initially */
+        }
+        input[type="text"], input[type="tel"], input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #9c27b0; /* Soft purple for buttons */
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #7b1fa2; /* Darker purple on hover */
+        }
+        .urgent-button {
+            padding: 10px 20px; /* Smaller button size */
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .urgent-button:hover {
+            background-color: darkred;
+        }
+        .self-defense-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid white;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- App Title / Logo -->
+    <div class="logo">
+        SHIELD HER
+    </div>
+
+    <!-- Form 1: Login -->
+    <div class="form-container" id="loginForm">
+        <h2>Login</h2>
+        <form>
+            <input type="text" id="fullName" placeholder="Full Name" required>
+            <input type="tel" id="mobileNumber" placeholder="Mobile Number" required>
+            <input type="email" id="guardianEmail" placeholder="Guardian's Email" required>
+            <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+    </div>
+
+    <!-- Form 2: Awareness -->
+    <div class="awareness-container" id="awarenessForm">
+        <h2>Awareness</h2>
+        <p>Stay aware of your surroundings. If you feel unsafe or face a problem, click the urgent button below to notify your guardian.</p>
+        <button class="urgent-button" id="urgentBtn" onclick="sendUrgentMessage()">Urgent Help</button>
+        <button type="button" onclick="showSelfDefense()">Learn About Self-Defense</button>
+    </div>
+
+    <!-- Form 3: Self-defense -->
+    <div class="self-defense-container" id="selfDefenseForm">
+        <h2>Self-defense Techniques</h2>
+        <img src="jj2.jpg" alt="Empowerment Image 1">
+        <p>A powerful front kick to the groin can quickly incapacitate an attacker, giving you a moment to escape.</p>
+        <img src="jj3.jpg" alt="Empowerment Image 2">
+        <p>A sharp and forceful palm strike to the face or nose can disorient your attacker and create space for a getaway.</p>
+        <img src="jj4.jpg" alt="Empowerment Image 3">
+        <p>A downward hammerfist strike to the face or collarbone can deliver a strong, debilitating blow to your attacker.</p>
+        <img src="jj5.jpg" alt="Empowerment Image 4">
+        <p>When grabbed from the side, swiftly use your arm to create a forceful backward motion, breaking free while simultaneously delivering a strike to the attacker's face or body.</p>
+        <img src="jj6.jpg" alt="Empowerment Image 5">
+        <p>Rotate your wrist toward the attacker's thumb and pull your arm back swiftly, utilizing leverage to free yourself from a wrist hold.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init('FST5o5oyruj63D6ya'); // Your EmailJS public key
+        })();
+
+        // Show the login form when the page loads
+        document.getElementById('loginForm').style.display = 'block';
+
+        // Function to handle the form submission
+        function submitForm() {
+            let fullName = document.getElementById("fullName").value;
+            let mobileNumber = document.getElementById("mobileNumber").value;
+            let guardianEmail = document.getElementById("guardianEmail").value;
+
+            if (fullName && mobileNumber && guardianEmail) {
+                // Save the details to local storage
+                localStorage.setItem('fullName', fullName);
+                localStorage.setItem('mobileNumber', mobileNumber);
+                localStorage.setItem('guardianEmail', guardianEmail);
+
+                // Move to the Awareness section
+                document.getElementById('loginForm').style.display = 'none'; // Hide login form
+                document.getElementById('awarenessForm').style.display = 'block'; // Show awareness form
+            } else {
+                alert("Please fill all fields.");
+            }
+        }
+
+        // Function to handle urgent button click
+        function sendUrgentMessage() {
+            let fullName = localStorage.getItem('fullName');
+            let mobileNumber = localStorage.getItem('mobileNumber');
+            let guardianEmail = localStorage.getItem('guardianEmail');
+
+            if (guardianEmail) {
+                const message = `You got a new message from Shield Her:\n\nEmail id: ${guardianEmail}\nMobile Number: ${mobileNumber}\nMessage: I need urgent help!`;
+
+                emailjs.send('service_cici2pt', 'template_n0n7f8o', {
+                    to_name: fullName,
+                    guardianEmail: guardianEmail,
+                    message: message,
+                })
+                .then(function(response) {
+                    alert("Message sent successfully!");
+                }, function(error) {
+                    alert("Failed to send message. Please try again later.");
+                });
+            } else {
+                alert("Guardian's email not found.");
+            }
+        }
+
+        // Function to show self-defense form
+        function showSelfDefense() {
+            document.getElementById('awarenessForm').style.display = 'none';
+            document.getElementById('selfDefenseForm').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
